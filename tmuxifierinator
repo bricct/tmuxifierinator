@@ -1,0 +1,73 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Initialize variables to store flag values
+template=
+session=
+root=
+
+# Function to display usage information
+usage() {
+  echo "Usage: tmuxifierinator [options]"
+  echo "Options:"
+  echo "  -t, --template <value>   Set the template file"
+  echo "  -s, --session <value>    Set the session flag"
+  echo "  -r, --root <value>       Set the root flag"
+  exit 1
+}
+
+# Parse the command-line options, including long options
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -s|--session)
+      session="$2"
+      shift 2
+      ;;
+    -r|--root)
+      root="$2"
+      shift 2
+      ;;
+    -t|--template)
+      template="$2"
+      shift 2
+      ;;
+    *)
+      echo "Invalid option: $1" >&2
+      usage
+      ;;
+  esac
+done
+
+# Check if --session, --root, and --template flags are set
+if [ -z "$session" ] || [ -z "$root" ] || [ -z "$template" ]; then
+  echo "--session, --root, and --template flags must be all be set."
+  usage
+fi
+
+# Check if the source file exists
+if [ ! -f "$HOME/.tmuxifierinator/templates/$template.session.template.sh" ]; then
+  echo "Template file '$template' does not exist in $(pwd)/templates."
+  exit 1
+fi
+
+if [ -z "$TMUXIFIER_LAYOUT_PATH" ]; then
+  echo "TMUXIFIER_LAYOUT_PATH must be set first."
+  exit 1
+fi
+
+if [ -z "$TMUXIFIER_TEMPLATE_PATH" ]; then
+  echo "TMUXIFIER_TEMPLATE_PATH must be set first."
+  exit 1
+fi
+
+# Check if the destination directory exists or create it if necessary
+if [ ! -d "$TMUXIFIER_LAYOUT_PATH" ]; then
+  mkdir -p "$destination_dir"
+fi
+
+# Use sed to replace "{{string}}" with the value of $myvar
+sed -e "s~{{session}}~$session~g" -e "s~{{root}}~$root~g" "$TMUXIFIER_TEMPLATE_PATH/$template.session.template.sh" > "$TMUXIFIER_LAYOUT_PATH/$session.session.sh"
+
+echo "New tmuxifier session layout $session created at $TMUXIFIER_LAYOUT_PATH/$session.session.sh."
+
