@@ -45,11 +45,6 @@ if [ -z "$session" ] || [ -z "$root" ] || [ -z "$template" ]; then
   usage
 fi
 
-# Check if the source file exists
-if [ ! -f "$HOME/.tmuxifierinator/templates/$template.session.template.sh" ]; then
-  echo "Template file '$template' does not exist in $(pwd)/templates."
-  exit 1
-fi
 
 if [ -z "$TMUXIFIER_LAYOUT_PATH" ]; then
   echo "TMUXIFIER_LAYOUT_PATH must be set first."
@@ -64,6 +59,12 @@ fi
 # Check if the destination directory exists or create it if necessary
 if [ ! -d "$TMUXIFIER_LAYOUT_PATH" ]; then
   mkdir -p "$destination_dir"
+fi
+
+# Check if the source file exists
+if [ ! -f "$TMUXIFIERINATOR_TEMPLATE_PATH/$template.session.template.sh" ]; then
+  echo "Template file '$template' does not exist in $(pwd)/templates."
+  exit 1
 fi
 
 # Use sed to replace "{{string}}" with the value of $myvar
