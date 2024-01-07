@@ -62,7 +62,7 @@ if [ ! -d "$TMUXIFIER_LAYOUT_PATH" ]; then
 fi
 
 # Check if the source file exists
-if [ ! -f "$TMUXIFIERINATOR_TEMPLATE_PATH/$template.session.template.sh" ]; then
+if [ ! -f "$TMUXIFIER_TEMPLATE_PATH/$template.session.template.sh" ]; then
   echo "Template file '$template' does not exist in $(pwd)/templates."
   exit 1
 fi
