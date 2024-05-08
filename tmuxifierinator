@@ -12,8 +12,8 @@ usage() {
   echo "Usage: tmuxifierinator [options]"
   echo "Options:"
   echo "  -t, --template <value>   Set the template file"
-  echo "  -s, --session <value>    Set the session flag"
-  echo "  -r, --root <value>       Set the root flag"
+  echo "  -s, --session <value>    Set the session name"
+  echo "  -r, --root <value>       Set the root directory"
   exit 1
 }
 
